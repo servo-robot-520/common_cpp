@@ -162,7 +162,7 @@ namespace logging::ros {
                                        std::memory_order_release);
         bridge_active.store(true, std::memory_order_release);
         rcutils_logging_set_output_handler(&RclcppLogHandler::log_output_handler);
-        // 安装 ROS 日志适配器，使 RCLCPP_* 日志自动发布到 /rosout。
+        // 安装 ROS 日志适配器，使用 rclcpp 来记录 log_macro.hpp/log_interface 产生的日志
         log_interface::LogManager::set(std::make_shared<RosLogAdapter>(log_config.logger_name));
         installed_config = log_config;
     }
@@ -211,8 +211,7 @@ namespace logging::ros {
         // 从而使 spdlog 的控制台输出重复。仅转发给专用的 ROS /rosout 处理器，
         // 使用独立的 va_list 副本。
         if (bridge_active.load(std::memory_order_acquire)) {
-            const RosoutReentrancyGuard reentrancy_guard;
-            if (reentrancy_guard.can_forward()) {
+            if (const RosoutReentrancyGuard reentrancy_guard; reentrancy_guard.can_forward()) {
                 std::scoped_lock rosout_lock(rosout_mutex);
                 if (bridge_active.load(std::memory_order_acquire)) {
                     va_list rosout_args;

@@ -10,7 +10,7 @@
 
 namespace logging::ros {
 
-/// 将LOG_* 宏的日志通过 rcutils_log 传送到 ROS /rosout 一次，再传送到公共 spdlog 后端一次。
+/// 将LOG_* 宏的日志通过 rcutils_log 传送到 ROS /rosout 一次，再传送到公共 spdlog 后端
 class RosLogAdapter final : public log_interface::LogInterface {
 public:
     explicit RosLogAdapter(std::string logger_name);
