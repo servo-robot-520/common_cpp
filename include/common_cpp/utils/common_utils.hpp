@@ -9,15 +9,6 @@
 #include <sstream>
 #include <string>
 
-#define CLASS_NAME(T) std::string_view(#T).substr(std::string_view(#T).rfind(':') + 1)
-
-#define FOR_ENUM(x) x
-#define FOR_NAME(x) #x
-
-#define ENUM_TO_STRING_CASE(EnumValue) \
-    case EnumValue:                    \
-        return #EnumValue
-
 namespace common_cpp::common_utils {
 
     /// Check whether the type has a size() method (used to distinguish native arrays and containers)
