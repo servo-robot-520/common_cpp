@@ -65,14 +65,13 @@ namespace {
 
 } // namespace
 
-std::string ros_utils::make_diagnostic_status_name(
-    const std::string_view node_fully_qualified_name,
-    const std::string_view hardware_id) {
+std::string ros_utils::make_diagnostic_status_name(const std::string_view node_fully_qualified_name,
+                                                   const std::string_view hardware_id) {
     if (common_utils::is_empty_or_ascii_whitespace(node_fully_qualified_name)) {
         throw_invalid_argument("node_fully_qualified_name must not be empty or ASCII whitespace");
     }
-    if (common_utils::is_empty_or_ascii_whitespace(hardware_id)) {
-        throw_invalid_argument("hardware_id must not be empty or ASCII whitespace");
+    if (node_fully_qualified_name == "/") {
+        throw_invalid_argument("node_fully_qualified_name must not be '/'");
     }
     if (hardware_id.find('/') != std::string_view::npos) {
         throw_invalid_argument("hardware_id must not contain '/'");
@@ -84,11 +83,13 @@ std::string ros_utils::make_diagnostic_status_name(
     }
 
     std::string result;
-    result.reserve(normalized_node_name.size() + 1 + hardware_id.size());
     result.append(normalized_node_name);
-    if (normalized_node_name != "/") {
+
+    if (!hardware_id.empty()) {
+        result.reserve(normalized_node_name.size() + 1 + hardware_id.size());
         result.push_back('/');
+        result.append(hardware_id);
     }
-    result.append(hardware_id);
+
     return result;
 }
