@@ -4,14 +4,15 @@
 
 #include <filesystem>
 #include <iostream>
-#include <spdlog/sinks/daily_file_sink.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
 #include <sstream>
 #include <stdexcept>
 #include <system_error>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/daily_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
-#include "common_cpp/logging/filter_sink.hpp"
 #include "common_cpp/logging/log.hpp"
+#include "common_cpp/logging/filter_sink.hpp"
 
 using namespace logging;
 
@@ -57,12 +58,19 @@ void Logger::init_file_log_sink(const LogConfig* log_config) {
             std::format("Unable to create logging directory '{}': {}", log_directory.string(), reason));
     }
 
-    const std::string log_file = (log_directory / std::format("log_{}.log", logger_name_)).string();
+    // Generates a separate log file each time it starts up：log_{name}_YYYYMMDD_HHMMSS.log
+    const auto now = std::chrono::system_clock::now();
+    const auto time_t_now = std::chrono::system_clock::to_time_t(now);
+    std::tm tm_buf{};
+    localtime_r(&time_t_now, &tm_buf);
+    std::ostringstream ts;
+    ts << std::put_time(&tm_buf, "%Y%m%d_%H%M%S");
+    const std::string log_file = (log_directory / std::format("log_{}_{}.log", logger_name_, ts.str())).string();
 
     // The rcutils bridge can be called from arbitrary executor and worker
     // threads. Use thread-safe sinks for both sync and async loggers.
-    const spdlog::sink_ptr file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(
-        log_file, 0, 0);
+    const spdlog::sink_ptr file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(
+        log_file, false);
     file_sink->set_level(log_config->log_level);
     const auto file_pattern = fmt::format("[%Y-%m-%d %H:%M:%S.%e] [{}] [%l] [%s:%# %!] %v",
                                           log_config->node_name.empty() ? logger_name_ : log_config->node_name);
@@ -131,7 +139,6 @@ Logger::Logger(const LogConfig* log_config) {
     }
 
     if (log_config->async) {
-        // todo: 线程池参数添加到配置文件中
         thread_pool_ = std::make_shared<spdlog::details::thread_pool>(1000, 1);
         logger_ = std::make_shared<spdlog::async_logger>(logger_name_, sinks_.begin(), sinks_.end(), thread_pool_);
     }
