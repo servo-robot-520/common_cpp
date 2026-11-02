@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "ros_common_cpp/logging/log.hpp"
+#include "common_cpp/logging/log.hpp"
 
 TEST(LoggingConfiguration, RejectsConfigurationAfterFallbackLoggerUse) {
     const auto logger = logging::Logger::get_instance().get_logger();

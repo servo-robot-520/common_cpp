@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "ros_common_cpp/logging/log.hpp"
+#include "common_cpp/logging/log.hpp"
 
 TEST(LoggingTarget, WritesWithoutRos) {
     const auto directory = std::filesystem::temp_directory_path() / "ros_common_cpp_logging_target_test";

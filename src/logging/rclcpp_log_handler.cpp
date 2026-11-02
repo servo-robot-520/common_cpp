@@ -18,8 +18,8 @@
 #include <rcl/logging_rosout.h>
 #include <rcutils/logging.h>
 
-#include "common_cpp/logging/log_interface/log_manager.hpp"
 #include "common_cpp/logging/ros_log_adapter.hpp"
+#include "common_cpp/logging/log_interface/log_manager.hpp"
 
 namespace logging::ros {
     namespace {

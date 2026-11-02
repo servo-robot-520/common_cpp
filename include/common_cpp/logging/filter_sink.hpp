@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <spdlog/sinks/base_sink.h>
 #include <string>
 #include <vector>
+#include <spdlog/sinks/base_sink.h>
 
 namespace logging {
 
@@ -27,7 +27,7 @@ namespace logging {
         }
 
         void add_rule(const FilterRule::Type type, const std::string& pattern) {
-            rules_.push_back({type, pattern});
+            rules_.push_back({.type = type, .pattern = pattern});
         }
 
     protected:

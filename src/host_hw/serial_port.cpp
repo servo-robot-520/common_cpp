@@ -5,10 +5,10 @@
 
 #include <fcntl.h>
 #include <format>
-#include <sys/select.h>
-#include <sys/types.h>
 #include <termios.h>
 #include <unistd.h>
+#include <sys/select.h>
+#include <sys/types.h>
 
 namespace host_hw {
 

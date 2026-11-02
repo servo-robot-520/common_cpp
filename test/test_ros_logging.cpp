@@ -14,8 +14,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rcutils/logging.h>
 
-#include "ros_common_cpp/logging/log_interface/log_macro.hpp"
-#include "ros_common_cpp/logging/rclcpp_log_handler.hpp"
+#include "common_cpp/logging/log_interface/log_macro.hpp"
+#include "common_cpp/logging/rclcpp_log_handler.hpp"
 
 namespace {
 

@@ -6,12 +6,12 @@
 
 #include <memory>
 #include <mutex>
-#include <spdlog/async.h>
-#include <spdlog/spdlog.h>
 #include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <spdlog/async.h>
+#include <spdlog/spdlog.h>
 
 #define SPDLOG_ENABLE_SOURCE_LOC
 

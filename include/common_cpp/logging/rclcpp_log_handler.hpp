@@ -6,12 +6,12 @@
 
 #include <iostream>
 #include <memory>
-#include <rclcpp/utilities.hpp>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <rclcpp/utilities.hpp>
 
 #include <rcutils/logging.h>
 
